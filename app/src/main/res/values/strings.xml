@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TransitionsLayout</string>
+
+    <string name="main_list_bounce">Test bounce ball</string>
 </resources>
