@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     private val items by lazy {
         val titles = mutableListOf<String>()
         titles.add(getString(R.string.main_list_bounce))
+        titles.add(getString(R.string.main_list_burst_layout))
         return@lazy titles
     }
     private lateinit var mainListAdapter: MainListAdapter
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         mainListAdapter.setOnItemClickListener { position ->
             when(position){
                 0 -> TestBouncingBallActivity.launch(this)
+                1 -> TestBurstLayoutActivity.launch(this)
             }
 
         }

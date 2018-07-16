@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">TransitionsLayout</string>
 
+    <!-- MainActivity -->
     <string name="main_list_bounce">Test bounce ball</string>
+    <string name="main_list_burst_layout">Test burst layout</string>
+
+    <!-- TestBurstLayoutActivity -->
+    <string name="show_line">SHOW LINE EFFECT</string>
 </resources>
