@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".TestBouncingBallActivity" />
-        <activity android:name=".TestBurstLayoutActivity"></activity>
+        <activity android:name=".TestBurstLayoutActivity" />
+        <activity android:name=".TestBalloonActivity"></activity>
     </application>
 
 </manifest>

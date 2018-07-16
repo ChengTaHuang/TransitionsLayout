@@ -5,4 +5,8 @@
         <attr name="scale" format="boolean" />
         <attr name="isFinishVisible" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="BalloonView">
+        <attr name="balloonColor" format="color" />
+    </declare-styleable>
 </resources>
