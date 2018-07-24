@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".TestBouncingBallActivity" />
         <activity android:name=".TestBurstLayoutActivity" />
-        <activity android:name=".TestBalloonActivity"></activity>
+        <activity android:name=".TestBalloonActivity" />
+        <activity android:name=".TestTransitionsActivity"></activity>
     </application>
 
 </manifest>

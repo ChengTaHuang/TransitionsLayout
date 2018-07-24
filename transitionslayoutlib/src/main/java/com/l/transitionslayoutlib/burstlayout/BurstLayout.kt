@@ -40,7 +40,10 @@ class BurstLayout : RelativeLayout, BurstLayoutInterface {
     private val animatorSets = mutableListOf<AnimatorSet>()
     var burstDuration = 1_000L
     var burstAlphaDuration = 1_500L
-
+    var lineDuration = 500L
+        set(value) {
+            line?.duration = value
+        }
     constructor(context: Context) : super(context) {
         drawables = createDrawables()
         //bitmaps = createBitmaps(drawables)
@@ -105,6 +108,16 @@ class BurstLayout : RelativeLayout, BurstLayoutInterface {
             addView(line, newParams)
             line!!.scaleX = 0f
         }
+    }
+
+    fun resizeLine(width: Float, height: Float , color : Int){
+        val newParams = RelativeLayout.LayoutParams(
+                width.toInt(),
+                height.toInt())
+
+        if(line == null) line = FlexibleLine(context)
+        line!!.setBackgroundColor(color)
+        line!!.layoutParams = newParams
     }
 
     fun setLineAnimationDuration(duration : Long){
@@ -216,6 +229,9 @@ class BurstLayout : RelativeLayout, BurstLayoutInterface {
             animatorSet.removeAllListeners()
             animatorSet.end()
             animatorSet.cancel()
+        }
+        for(imageView in imageViews){
+            removeView(imageView)
         }
         imageViews.clear()
     }

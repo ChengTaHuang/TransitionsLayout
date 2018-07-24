@@ -11,6 +11,7 @@ import android.support.annotation.ColorRes
 import android.support.annotation.NonNull
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.view.animation.LinearInterpolator
 import com.l.transitionslayoutlib.R
@@ -22,15 +23,16 @@ class BouncingBall : View, BouncingBallInterface {
 
     var isScale = true
     var isFinishVisible = false
+    private var animateStart = false
 
     @ColorRes var ballBackgroundColor: Int = R.color.default_main_color
         set(value) {
             setBallColor(value)
         }
     var listener: BouncingBallEventListener? = null
-    private var paths = mutableListOf<Bounce>()
+    private var paths = listOf<Bounce>()
     private val animatorSet = AnimatorSet()
-    private val animatorList = mutableListOf<Animator>()
+    private val animatorList = mutableListOf<ValueAnimator>()
 
     companion object {
         fun createBouncePath(bounce: Bounce, times: Int): MutableList<Bounce> {
@@ -51,7 +53,7 @@ class BouncingBall : View, BouncingBallInterface {
     }
 
     constructor(context: Context) : super(context) {
-
+        setBallColor(ballBackgroundColor)
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
@@ -77,13 +79,14 @@ class BouncingBall : View, BouncingBallInterface {
         }
     }
 
-    override fun setPaths(paths: MutableList<Bounce>) {
+    override fun setPaths(paths: List<Bounce>) {
         this.paths = paths
     }
 
     override fun getPaths(): List<Bounce> = paths
 
     override fun playBounce() {
+        animateStart = false
         clearAnimatorSet()
         for((index , path) in paths.withIndex()){
             val animate = createAnimate(path, index)
@@ -99,6 +102,7 @@ class BouncingBall : View, BouncingBallInterface {
             override fun onAnimationEnd(p0: Animator?) {
                 visibility = if(isFinishVisible) VISIBLE else INVISIBLE
                 listener?.finish()
+                animateStart = false
             }
 
             override fun onAnimationCancel(p0: Animator?) {
@@ -107,15 +111,23 @@ class BouncingBall : View, BouncingBallInterface {
             override fun onAnimationStart(p0: Animator?) {
                 visibility = VISIBLE
                 listener?.start()
+                animateStart = true
             }
 
         })
 
-        animatorSet.playSequentially(animatorList)
+        animatorSet.playSequentially(animatorList as List<Animator>?)
         animatorSet.start()
     }
 
     private fun clearAnimatorSet(){
+        for(animator in animatorList){
+            animator.repeatCount = 0
+            animator.end()
+            animator.cancel()
+            animator.removeAllListeners()
+            animator.removeAllUpdateListeners()
+        }
         animatorList.clear()
         animatorSet.removeAllListeners()
         animatorSet.end()
@@ -133,11 +145,10 @@ class BouncingBall : View, BouncingBallInterface {
             val ballPathPoint = it.animatedValue as BallPathPointF
             val point = ballPathPoint.pointF
             val percent = valueAnimator.animatedFraction
-
-            if(percent == 1.0f){
+            if(percent == 1.0f && flag && animateStart){
                 listener?.collision(point, index+1, bounce)
                 flag = false
-            }else if(percent > 0.49 && !flag){
+            }else if(percent > 0.49 && !flag && animateStart){
                 listener?.top(point, index+1, bounce)
                 flag = true
             }

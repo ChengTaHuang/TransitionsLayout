@@ -5,7 +5,7 @@ package com.l.transitionslayoutlib.ball
  */
 interface BouncingBallInterface {
 
-    fun setPaths(paths : MutableList<BouncingBall.Bounce>)
+    fun setPaths(paths : List<BouncingBall.Bounce>)
 
     fun getPaths() : List<BouncingBall.Bounce>
 

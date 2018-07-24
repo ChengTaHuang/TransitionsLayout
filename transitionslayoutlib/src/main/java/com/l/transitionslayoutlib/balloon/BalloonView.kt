@@ -27,7 +27,7 @@ import java.util.*
 class BalloonView  : View {
     private var mGifInputStream: InputStream? = null
     private lateinit var mGifMovie: Movie
-    private lateinit var mKeepGifMovie: Movie
+    //private lateinit var mKeepGifMovie: Movie
     private var mMeasuredMovieWidth = 0
     private var mMeasuredMovieHeight = 0
     private var movieDuration: Int = 0
@@ -37,8 +37,8 @@ class BalloonView  : View {
     private var drawPoint = PointF(0f, 0f)
 
     private var drawing = false
-    private var keep = false
-    var isShowKeep = false
+    //private var keep = false
+    //var isShowKeep = false
 
     var listener: Listener? = null
     var color: Int = Color.RED
@@ -98,12 +98,14 @@ class BalloonView  : View {
     private fun init(context: Context) {
         isFocusable = true
         mGifInputStream = context.resources.openRawResource(R.raw.balloon)
-        val mGifInputStream2 = context.resources.openRawResource(R.raw.balloon)
+        //val mGifInputStream2 = context.resources.openRawResource(R.raw.balloon)
         mGifMovie = Movie.decodeStream(mGifInputStream)
-        mKeepGifMovie = Movie.decodeStream(mGifInputStream2)
+        //mKeepGifMovie = Movie.decodeStream(mGifInputStream2)
         movieDuration = mGifMovie.duration()
         drawables = createDrawables()
         bitmaps = createBitmaps(drawables)
+
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null)
     }
 
     private fun addBitmapAnimate() {
@@ -308,7 +310,7 @@ class BalloonView  : View {
 
     fun stop() {
         drawing = false
-        keep = false
+        //keep = false
         invalidate()
     }
 
@@ -352,15 +354,15 @@ class BalloonView  : View {
             invalidate()
         }
 
-        if (keep && isShowKeep) {
-            mKeepGifMovie.setTime(mKeepGifMovie.duration())
-            canvas.save()
-            canvas.scale(mScale, mScale)
-            mKeepGifMovie.draw(canvas, drawPoint.x / mScale, drawPoint.y / mScale, mPaint)
-            canvas.restore()
-
-            invalidate()
-        }
+//        if (keep && isShowKeep) {
+//            mKeepGifMovie.setTime(mKeepGifMovie.duration())
+//            canvas.save()
+//            canvas.scale(mScale, mScale)
+//            mKeepGifMovie.draw(canvas, drawPoint.x / mScale, drawPoint.y / mScale, mPaint)
+//            canvas.restore()
+//
+//            invalidate()
+//        }
 
         //if (drawing || isShowKeep)
         //    invalidate()
@@ -370,7 +372,7 @@ class BalloonView  : View {
         val now = SystemClock.uptimeMillis()
         val nowCount = ((now - mMovieStart) / movieDuration)
         if (nowCount >= 1) {
-            keep = true
+            //keep = true
             drawing = false
             listener?.playEnd()
         }
@@ -497,7 +499,6 @@ class BalloonView  : View {
 
     private fun createAnimator(target: CustomBitmap, degree: Int): ValueAnimator {
         val evaluator = BurstEvaluator()
-
         val radius = Random().nextInt(Math.min(width, height) / 3) + 1
         val animator = ValueAnimator.ofObject(evaluator,
                 getCirclePoint(
