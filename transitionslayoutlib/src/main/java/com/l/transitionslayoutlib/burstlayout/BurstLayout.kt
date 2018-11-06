@@ -176,7 +176,7 @@ class BurstLayout : RelativeLayout, BurstLayoutInterface {
 
         val animator = ValueAnimator.ofObject(evaluator,
                 PointF((Math.abs(width - bitmapWidth) * index / size).toFloat() + startX ,startY.toFloat()),
-                PointF(Random().nextInt(Math.abs(width - bitmapWidth)).toFloat() + startX, Random().nextInt(height).toFloat() + startY))
+                PointF(Random().nextInt(Math.abs(width - bitmapWidth + 1)).toFloat() + startX, Random().nextInt(height).toFloat() + startY))
 
         animator.duration = burstAlphaDuration
         animator.setTarget(target)
